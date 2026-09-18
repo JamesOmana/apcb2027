@@ -1,0 +1,937 @@
+<title>Track 4 Workshop Plan</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap">
+
+<style>
+:root {
+  --navy: #0E2240;
+  --teal: #077A8A;
+  --teal-light: #0A9BAF;
+  --amber: #C46B1A;
+  --bg: #F2F6FA;
+  --card: #FFFFFF;
+  --border: #C8D8E4;
+  --text: #0E2240;
+  --text-2: #4A6072;
+  --text-3: #8099AA;
+  --label-w: 210px;
+  --month-w: 72px;
+  --row-h: 34px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #08131E;
+    --card: #0D1E2E;
+    --border: #182E42;
+    --text: #E2EDF7;
+    --text-2: #6EA0C0;
+    --text-3: #355470;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #08131E;
+  --card: #0D1E2E;
+  --border: #182E42;
+  --text: #E2EDF7;
+  --text-2: #6EA0C0;
+  --text-3: #355470;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 0 20px;
+  padding-block: 32px 48px;
+  line-height: 1.5;
+}
+
+.page { max-width: 1280px; margin: 0 auto; }
+
+/* ── Page header ── */
+.page-header { margin-bottom: 24px; }
+
+.eyebrow {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 6px;
+}
+
+.page-header h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(22px, 3.5vw, 34px);
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.15;
+  margin-bottom: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .page-header h1 { color: var(--text); }
+}
+:root[data-theme="dark"] .page-header h1 { color: var(--text); }
+
+.page-header p { font-size: 13px; color: var(--text-2); }
+
+/* ══════════════════════════════════════════
+   METRICS DASHBOARD
+══════════════════════════════════════════ */
+.metrics-section {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+/* Doughnut card */
+.doughnut-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 26px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 0 0 auto;
+  min-width: 260px;
+}
+
+.doughnut-wrap {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+}
+
+.doughnut-svg {
+  width: 110px;
+  height: 110px;
+  transform: rotate(-90deg);
+}
+
+.doughnut-track {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 9;
+}
+
+.doughnut-fill {
+  fill: none;
+  stroke: var(--teal);
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-dasharray: 314.16;
+  stroke-dashoffset: 314.16;
+  transition: stroke-dashoffset 1.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.doughnut-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.doughnut-pct {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--teal);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.doughnut-sublabel {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.doughnut-meta { flex: 1; }
+
+.doughnut-meta-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 4px;
+}
+
+.doughnut-meta-main {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.phase-badge {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+}
+
+.doughnut-meta-note {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.45;
+}
+
+/* Stat tiles */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  flex: 1;
+  min-width: 260px;
+}
+
+.stat-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-tile::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+}
+
+.stat-tile.color-teal::before   { background: var(--teal); }
+.stat-tile.color-amber::before  { background: var(--amber); }
+.stat-tile.color-navy::before   { background: #3B52C4; }
+.stat-tile.color-green::before  { background: #2A7D52; }
+.stat-tile.color-purple::before { background: #7A3EA0; }
+.stat-tile.color-red::before    { background: #B32020; }
+
+.stat-icon {
+  font-size: 16px;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.stat-number {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.stat-number.big { font-size: 32px; }
+
+.stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.stat-sub {
+  font-size: 11px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+/* Wide countdown tile */
+.stat-tile.wide {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+}
+
+.countdown-blocks {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.cd-block { text-align: center; }
+
+.cd-num {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+.cd-unit {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.cd-sep {
+  font-size: 22px;
+  color: var(--border);
+  font-weight: 300;
+  align-self: center;
+  margin-bottom: 8px;
+}
+
+.countdown-meta { flex: 1; }
+
+.countdown-meta .stat-label { margin-bottom: 2px; }
+
+.countdown-date {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+/* Progress bar in tile */
+.mini-progress-wrap {
+  margin-top: 6px;
+  background: var(--border);
+  border-radius: 4px;
+  height: 5px;
+  overflow: hidden;
+}
+
+.mini-progress-bar {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--teal);
+  transition: width 1.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  width: 0%;
+}
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--text-2);
+}
+
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.legend-diamond {
+  width: 8px; height: 8px;
+  background: var(--amber);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+/* ── Gantt wrapper ── */
+.gantt-wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.gantt-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── Gantt header ── */
+.gantt-header {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  background: var(--card);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.gantt-header-label {
+  flex: 0 0 var(--label-w);
+  min-width: var(--label-w);
+  padding: 10px 12px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  background: var(--card);
+  z-index: 21;
+}
+
+.gantt-months { display: flex; }
+
+.month-cell {
+  flex: 0 0 var(--month-w);
+  width: var(--month-w);
+  padding: 7px 4px 6px;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--text-3);
+  border-right: 1px solid var(--border);
+}
+
+.month-cell.new-year { color: var(--teal); font-weight: 600; }
+
+/* ── Phase row ── */
+.phase-row { display: flex; border-bottom: 1px solid var(--border); }
+.phase-row-label {
+  flex: 0 0 var(--label-w);
+  min-width: var(--label-w);
+  position: sticky; left: 0;
+  background: var(--card); z-index: 10;
+  border-right: 1px solid var(--border);
+}
+.phase-zones { display: flex; }
+.phase-zone {
+  flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-right: 1px solid var(--border);
+  padding: 4px 3px; white-space: nowrap; overflow: hidden; height: 22px;
+}
+
+/* ── Workstream header ── */
+.ws-header { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); }
+.ws-header-label {
+  flex: 0 0 var(--label-w); min-width: var(--label-w);
+  position: sticky; left: 0; background: var(--bg); z-index: 10;
+  padding: 5px 10px 5px 13px;
+  font-size: 10.5px; font-weight: 600;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  border-right: 3px solid;
+  display: flex; align-items: center;
+}
+.ws-header-spacer { flex: 1; min-width: calc(6 * var(--month-w)); }
+
+/* ── Task row ── */
+.task-row { display: flex; border-bottom: 1px solid var(--border); min-height: var(--row-h); }
+.task-row:last-child { border-bottom: none; }
+.task-label {
+  flex: 0 0 var(--label-w); min-width: var(--label-w);
+  position: sticky; left: 0; background: var(--card); z-index: 10;
+  padding: 0 10px 0 16px;
+  font-size: 11.5px; color: var(--text-2);
+  border-right: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+.task-timeline {
+  flex: 1; min-width: calc(6 * var(--month-w));
+  position: relative;
+  background: repeating-linear-gradient(
+    to right,
+    transparent 0px,
+    transparent calc(var(--month-w) - 1px),
+    var(--border) calc(var(--month-w) - 1px),
+    var(--border) var(--month-w)
+  );
+}
+
+/* Today marker */
+.today-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: #E83030;
+  opacity: 0.6;
+  z-index: 4;
+}
+.today-label {
+  position: absolute;
+  top: 2px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #E83030;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.bar { position: absolute; top: 5px; bottom: 5px; border-radius: 3px; }
+.milestone-diamond {
+  position: absolute; top: 50%;
+  width: 11px; height: 11px;
+  background: var(--amber);
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: 5; border-radius: 1px;
+}
+.milestone-glow {
+  position: absolute; top: 3px; bottom: 3px; border-radius: 3px;
+  background: var(--amber); opacity: 0.12; border: 1.5px solid var(--amber);
+}
+
+/* ── Milestones section ── */
+.section-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 18px; font-weight: 600;
+  color: var(--navy); margin-bottom: 14px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .section-title { color: var(--text); }
+}
+:root[data-theme="dark"] .section-title { color: var(--text); }
+
+.milestones-section {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px 22px;
+}
+.milestone-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
+.milestone-card {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg);
+}
+.m-diamond {
+  width: 9px; height: 9px; background: var(--amber);
+  transform: rotate(45deg); flex-shrink: 0; margin-top: 4px; border-radius: 1px;
+}
+.m-month {
+  font-size: 10px; font-weight: 600; color: var(--teal);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px;
+}
+.m-text { font-size: 12.5px; color: var(--text); }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  :root { --label-w: 130px; --month-w: 58px; }
+  body { padding: 0 12px; padding-block: 20px 36px; }
+  .task-label { font-size: 10.5px; padding-left: 10px; }
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-tile.wide { grid-column: span 1; flex-direction: column; }
+  .doughnut-card { flex-direction: column; }
+  .metrics-section { flex-direction: column; }
+}
+</style>
+
+<div class="page">
+
+  <div class="page-header">
+    <div class="eyebrow">APCB 2027 · Track 4 · Inside the Pleural Space</div>
+    <h1>Workshop Planning Timeline</h1>
+    <p>Mastering Medical Thoracoscopy and Pleural Interventions &mdash; October 2026 through Congress Day 2027</p>
+  </div>
+
+  <!-- ── Metrics Dashboard ── -->
+  <div class="metrics-section">
+
+    <!-- Doughnut: project % complete -->
+    <div class="doughnut-card">
+      <div class="doughnut-wrap">
+        <svg class="doughnut-svg" viewBox="0 0 120 120">
+          <circle class="doughnut-track" cx="60" cy="60" r="50"/>
+          <circle class="doughnut-fill" cx="60" cy="60" r="50" id="doughnut-fill"/>
+        </svg>
+        <div class="doughnut-inner">
+          <div class="doughnut-pct" id="doughnut-pct">0%</div>
+          <div class="doughnut-sublabel">Done</div>
+        </div>
+      </div>
+      <div class="doughnut-meta">
+        <div class="doughnut-meta-title">Overall Progress</div>
+        <div class="doughnut-meta-main" id="doughnut-phase-label">Pre-Launch</div>
+        <span class="phase-badge" id="doughnut-phase-badge"
+              style="background:rgba(7,122,138,0.12);color:#077A8A;">
+          Foundation ▸ Oct 2026
+        </span>
+        <div class="doughnut-meta-note" id="doughnut-note">Project kicks off next month</div>
+      </div>
+    </div>
+
+    <!-- Stat tiles -->
+    <div class="stats-grid">
+
+      <!-- Countdown: wide tile -->
+      <div class="stat-tile wide color-red">
+        <div class="countdown-meta">
+          <div class="stat-label">⭐ Workshop Day Countdown</div>
+          <div class="countdown-date" id="workshop-date-label">APCB 2027 Congress</div>
+        </div>
+        <div class="countdown-blocks">
+          <div class="cd-block">
+            <span class="cd-num" id="cd-days">—</span>
+            <span class="cd-unit">days</span>
+          </div>
+          <div class="cd-sep">|</div>
+          <div class="cd-block">
+            <span class="cd-num" id="cd-weeks">—</span>
+            <span class="cd-unit">weeks</span>
+          </div>
+          <div class="cd-sep">|</div>
+          <div class="cd-block">
+            <span class="cd-num" id="cd-months">—</span>
+            <span class="cd-unit">months</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Total tasks -->
+      <div class="stat-tile color-teal">
+        <div class="stat-icon">📋</div>
+        <div class="stat-number" id="stat-tasks">29</div>
+        <div class="stat-label">Total Tasks</div>
+        <div class="stat-sub" id="stat-tasks-sub">Across 6 workstreams</div>
+        <div class="mini-progress-wrap">
+          <div class="mini-progress-bar" id="tasks-bar"></div>
+        </div>
+      </div>
+
+      <!-- Milestones -->
+      <div class="stat-tile color-amber">
+        <div class="stat-icon">💎</div>
+        <div class="stat-number">8</div>
+        <div class="stat-label">Key Milestones</div>
+        <div class="stat-sub" id="stat-next-ms">Next: Station B confirmed</div>
+      </div>
+
+      <!-- Faculty / delegates -->
+      <div class="stat-tile color-navy">
+        <div class="stat-icon">🩺</div>
+        <div class="stat-number">4–5</div>
+        <div class="stat-label">Intl. Facilitators</div>
+        <div class="stat-sub">+ local faculty to confirm</div>
+      </div>
+
+      <!-- Delegates -->
+      <div class="stat-tile color-purple">
+        <div class="stat-icon">👥</div>
+        <div class="stat-number">25</div>
+        <div class="stat-label">Delegates</div>
+        <div class="stat-sub">4 rotation groups of ~6</div>
+      </div>
+
+    </div>
+  </div>
+  <!-- end metrics -->
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#077A8A"></div> Program Design</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#3B52C4"></div> Faculty &amp; Speakers</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#2A7D52"></div> Educational Materials</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#B85C1A"></div> Equipment &amp; Logistics</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#7A3EA0"></div> Delegate Management</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#B32020"></div> Execution</div>
+    <div class="legend-item" style="margin-left:6px;"><div class="legend-diamond"></div> Key Milestone</div>
+    <div class="legend-item" style="margin-left:2px;">
+      <div style="width:10px;height:10px;background:#E83030;border-radius:1px;opacity:0.6;"></div>
+      Today
+    </div>
+  </div>
+
+  <div class="gantt-wrapper">
+    <div class="gantt-scroll" id="gantt-container"></div>
+  </div>
+
+  <div class="milestones-section">
+    <div class="section-title">Key Milestones</div>
+    <div class="milestone-grid" id="milestone-grid"></div>
+  </div>
+
+</div>
+
+<script>
+const MW = 72; // month width px
+
+// Project dates
+const PROJECT_START  = new Date(2026, 9,  1); // Oct 1, 2026
+const WORKSHOP_DAY   = new Date(2027, 2,  2); // Mar 2, 2027
+const TODAY          = new Date();
+
+// ─── MONTHS ───────────────────────────────────────────────────────
+const MONTHS = [
+  { label: 'Oct 2026', newYear: false },
+  { label: 'Nov',      newYear: false },
+  { label: 'Dec',      newYear: false },
+  { label: 'Jan 2027', newYear: true  },
+  { label: 'Feb',      newYear: false },
+  { label: 'Mar',      newYear: false },
+];
+
+// PHASES (6-month runway: Oct 2026 – Mar 2027)
+const PHASES = [
+  { label: 'Foundation',  start: 0, span: 2, color: 'rgba(7,122,138,0.10)',  text: '#077A8A' },
+  { label: 'Development', start: 2, span: 2, color: 'rgba(59,82,196,0.09)',  text: '#3B52C4' },
+  { label: 'Final Prep',  start: 4, span: 1, color: 'rgba(184,92,26,0.11)', text: '#B85C1A' },
+  { label: 'Execution',   start: 5, span: 1, color: 'rgba(179,32,32,0.10)', text: '#B32020' },
+];
+
+// WORKSTREAMS + TASKS (6-month runway: Oct 2026 – Mar 2, 2027)
+const WORKSTREAMS = [
+  { label: 'Program Design & Approval', color: '#077A8A', tasks: [
+    { name: 'Confirm Station B content',              start: 0, span: 1, milestone: true },
+    { name: 'Committee approval on final schedule',   start: 0, span: 1, milestone: true },
+    { name: 'Finalize WABIP-aligned objectives',      start: 0, span: 2 },
+    { name: 'Update committee deck (PPT)',             start: 1, span: 1 },
+  ]},
+  { label: 'Faculty & Speakers', color: '#3B52C4', tasks: [
+    { name: 'Send formal faculty invitations',        start: 0, span: 2 },
+    { name: 'Confirm station assignments',            start: 1, span: 1, milestone: true },
+    { name: 'Collect speaker bios and photos',        start: 1, span: 1 },
+    { name: 'Send speaker briefing packs',            start: 2, span: 1 },
+    { name: 'Coordinate AV & station needs per speaker', start: 2, span: 2 },
+    { name: 'Collect final lecture slides',           start: 3, span: 1 },
+    { name: 'Final faculty confirmation',             start: 4, span: 1, milestone: true },
+  ]},
+  { label: 'Educational Materials', color: '#2A7D52', tasks: [
+    { name: 'OSCE rubrics — all 4 stations',          start: 1, span: 2 },
+    { name: 'Facilitator brief documents',            start: 2, span: 1 },
+    { name: 'Delegate pre-reading list',              start: 2, span: 1 },
+    { name: 'Certificate design and printing',        start: 3, span: 1 },
+    { name: 'Final materials package ready',          start: 4, span: 1, milestone: true },
+  ]},
+  { label: 'Equipment & Logistics', color: '#B85C1A', tasks: [
+    { name: 'Confirm venue room size & station layout', start: 0, span: 1, milestone: true },
+    { name: 'Finalize equipment checklist per station', start: 1, span: 1 },
+    { name: 'Vendor and supplier outreach',           start: 1, span: 2 },
+    { name: 'Training model / phantom confirmation',  start: 3, span: 1, milestone: true },
+    { name: 'Equipment dry run at venue',             start: 4, span: 1 },
+    { name: 'Day-before venue setup',                 start: 5, span: 1 },
+  ]},
+  { label: 'Delegate Management', color: '#7A3EA0', tasks: [
+    { name: 'Registration opens',                     start: 0, span: 1, milestone: true },
+    { name: 'Registration closes — 25 delegates',     start: 2, span: 1, milestone: true },
+    { name: 'Group assignments (4 groups of ~6)',      start: 3, span: 1 },
+    { name: 'Pre-reading package to delegates',       start: 4, span: 1 },
+    { name: 'Final delegate briefing',                start: 4, span: 1 },
+  ]},
+  { label: 'Execution', color: '#B32020', tasks: [
+    { name: 'Day-before setup and rehearsal',         start: 5, span: 1 },
+    { name: '★ WORKSHOP DAY — Mar 2, 2027',           start: 5, span: 1, milestone: true, highlight: true },
+    { name: 'Post-event evaluation and debrief',      start: 5, span: 1 },
+  ]},
+];
+
+const KEY_MILESTONES = [
+  { month: 'Oct 2026', text: 'Station B content confirmed' },
+  { month: 'Oct 2026', text: 'Committee approves final schedule' },
+  { month: 'Oct 2026', text: 'Delegate registration opens' },
+  { month: 'Nov 2026', text: 'Faculty station assignments confirmed' },
+  { month: 'Dec 2026', text: 'Registration closes — all 25 delegates confirmed' },
+  { month: 'Jan 2027', text: 'Training models and phantoms secured' },
+  { month: 'Feb 2027', text: 'All faculty confirmed · Materials finalized' },
+  { month: 'Mar 2, 2027', text: '★ Workshop Day — APCB 2027 Congress' },
+];
+
+// ─── HELPERS ─────────────────────────────────────────────────────
+function daysBetween(a, b) {
+  return Math.round((b - a) / 86400000);
+}
+
+function clamp(v, lo, hi) {
+  return Math.max(lo, Math.min(hi, v));
+}
+
+// Month index (0-based from Oct 2026) for a given Date
+function monthIndex(d) {
+  const startYear = 2026, startMonth = 9; // JS: Oct = 9
+  return (d.getFullYear() - startYear) * 12 + (d.getMonth() - startMonth);
+}
+
+// ─── METRICS ────────────────────────────────────────────────────
+function buildMetrics() {
+  const totalDays = daysBetween(PROJECT_START, WORKSHOP_DAY);
+  const elapsed   = daysBetween(PROJECT_START, TODAY);
+  const pct       = clamp(Math.round((elapsed / totalDays) * 100), 0, 100);
+
+  // Countdown
+  const daysLeft   = daysBetween(TODAY, WORKSHOP_DAY);
+  const weeksLeft  = Math.floor(daysLeft / 7);
+  const monthsLeft = Math.floor(daysLeft / 30.44);
+
+  document.getElementById('cd-days').textContent   = daysLeft > 0 ? daysLeft : 0;
+  document.getElementById('cd-weeks').textContent  = daysLeft > 0 ? weeksLeft : 0;
+  document.getElementById('cd-months').textContent = daysLeft > 0 ? monthsLeft : 0;
+  document.getElementById('workshop-date-label').textContent =
+    'Target: Mar 2, 2027 · APCB Congress';
+
+  // Current phase
+  const mi = monthIndex(TODAY);
+  let currentPhase = null;
+  for (const p of PHASES) {
+    if (mi >= p.start && mi < p.start + p.span) { currentPhase = p; break; }
+  }
+
+  // Doughnut
+  const CIRC = 314.16;
+  const fill  = document.getElementById('doughnut-fill');
+  const pctEl = document.getElementById('doughnut-pct');
+  const phaseLabel = document.getElementById('doughnut-phase-label');
+  const phaseBadge = document.getElementById('doughnut-phase-badge');
+  const note       = document.getElementById('doughnut-note');
+
+  if (pct === 0 && elapsed < 0) {
+    // Before project start
+    const kickoffDays = -elapsed;
+    pctEl.textContent = '0%';
+    phaseLabel.textContent = 'Pre-Launch';
+    phaseBadge.textContent = `Kicks off in ${kickoffDays} day${kickoffDays !== 1 ? 's' : ''}`;
+    phaseBadge.style.background = 'rgba(7,122,138,0.12)';
+    phaseBadge.style.color = '#077A8A';
+    note.textContent = 'Foundation phase begins Oct 2026';
+  } else {
+    pctEl.textContent = pct + '%';
+    if (currentPhase) {
+      phaseLabel.textContent = currentPhase.label + ' Phase';
+      phaseBadge.textContent = MONTHS[clamp(mi, 0, 5)].label;
+      phaseBadge.style.background = currentPhase.color;
+      phaseBadge.style.color = currentPhase.text;
+    }
+    note.textContent = `${elapsed} days elapsed of ${totalDays} total`;
+  }
+
+  // Animate doughnut after paint
+  setTimeout(() => {
+    const offset = CIRC - (pct / 100) * CIRC;
+    fill.style.strokeDashoffset = offset;
+    // animate progress bars
+    document.querySelectorAll('.mini-progress-bar').forEach(bar => {
+      bar.style.width = pct + '%';
+    });
+  }, 120);
+
+  // Total tasks count
+  const totalTasks = WORKSTREAMS.reduce((s, ws) => s + ws.tasks.length, 0);
+  document.getElementById('stat-tasks').textContent = totalTasks;
+
+  // Next milestone text
+  const milestoneTasks = [];
+  WORKSTREAMS.forEach(ws => ws.tasks.forEach(t => {
+    if (t.milestone) milestoneTasks.push({ name: t.name, start: t.start });
+  }));
+  // Find first milestone that's in the future
+  const nextMs = milestoneTasks.find(m => m.start >= Math.max(mi, 0));
+  if (nextMs) {
+    document.getElementById('stat-next-ms').textContent =
+      'Next: ' + nextMs.name.replace('★ ', '');
+  }
+}
+
+// ─── GANTT ─────────────────────────────────────────────────────
+function leftPx(m) { return (m * MW) + 'px'; }
+function widthPx(s) { return (s * MW) + 'px'; }
+function centerPx(m) { return (m * MW + MW / 2) + 'px'; }
+
+function buildGantt() {
+  const mi = monthIndex(TODAY); // current month index
+  // Fractional position of today within the month (0–1)
+  const dayOfMonth = TODAY.getDate();
+  const daysInMonth = new Date(TODAY.getFullYear(), TODAY.getMonth() + 1, 0).getDate();
+  const todayFrac = dayOfMonth / daysInMonth;
+  const todayPx = mi >= 0 && mi < 6 ? (mi + todayFrac) * MW : null;
+
+  let h = '';
+
+  // Month header
+  h += `<div class="gantt-header">`;
+  h += `<div class="gantt-header-label">Task</div>`;
+  h += `<div class="gantt-months">`;
+  MONTHS.forEach(m => {
+    h += `<div class="month-cell${m.newYear ? ' new-year' : ''}">${m.label}</div>`;
+  });
+  h += `</div></div>`;
+
+  // Phase row
+  h += `<div class="phase-row"><div class="phase-row-label"></div><div class="phase-zones">`;
+  PHASES.forEach(p => {
+    h += `<div class="phase-zone" style="width:${p.span*MW}px;background:${p.color};color:${p.text};">${p.label}</div>`;
+  });
+  h += `</div></div>`;
+
+  // Workstreams
+  WORKSTREAMS.forEach(ws => {
+    h += `<div class="ws-header">`;
+    h += `<div class="ws-header-label" style="color:${ws.color};border-right-color:${ws.color};">${ws.label}</div>`;
+    h += `<div class="ws-header-spacer"></div></div>`;
+
+    ws.tasks.forEach(task => {
+      const L = leftPx(task.start);
+      const W = widthPx(task.span);
+      const C = centerPx(task.start);
+
+      h += `<div class="task-row">`;
+      h += `<div class="task-label">${task.name}</div>`;
+      h += `<div class="task-timeline">`;
+
+      // Today marker
+      if (todayPx !== null) {
+        h += `<div class="today-line" style="left:${todayPx}px;"></div>`;
+        // Only show label on first row
+        if (ws === WORKSTREAMS[0] && task === ws.tasks[0]) {
+          h += `<div class="today-label" style="left:${todayPx}px;">Today</div>`;
+        }
+      }
+
+      if (task.milestone) {
+        if (task.highlight) {
+          h += `<div class="milestone-glow" style="left:${L};width:${W};border-color:${ws.color};background:${ws.color};"></div>`;
+        }
+        h += `<div class="milestone-diamond" style="left:${C};"></div>`;
+      } else {
+        h += `<div class="bar" style="left:${L};width:${W};background:${ws.color};opacity:0.82;"></div>`;
+      }
+
+      h += `</div></div>`;
+    });
+  });
+
+  document.getElementById('gantt-container').innerHTML = h;
+}
+
+function buildMilestones() {
+  document.getElementById('milestone-grid').innerHTML = KEY_MILESTONES.map(m => `
+    <div class="milestone-card">
+      <div class="m-diamond"></div>
+      <div>
+        <div class="m-month">${m.month}</div>
+        <div class="m-text">${m.text}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+buildMetrics();
+buildGantt();
+buildMilestones();
+</script>
