@@ -364,6 +364,7 @@ body {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 24px;
+  max-width: calc(var(--label-w) + 7 * var(--month-w) + 2px);
 }
 
 .gantt-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -394,7 +395,7 @@ body {
   z-index: 21;
 }
 
-.gantt-months { display: flex; }
+.gantt-months { display: flex; flex: 0 0 calc(7 * var(--month-w)); width: calc(7 * var(--month-w)); overflow: hidden; }
 
 .month-cell {
   flex: 0 0 var(--month-w);
@@ -418,7 +419,7 @@ body {
   background: var(--card); z-index: 10;
   border-right: 1px solid var(--border);
 }
-.phase-zones { display: flex; }
+.phase-zones { display: flex; flex: 0 0 calc(7 * var(--month-w)); width: calc(7 * var(--month-w)); overflow: hidden; }
 .phase-zone {
   flex: 0 0 auto;
   display: flex; align-items: center; justify-content: center;
@@ -439,7 +440,7 @@ body {
   border-right: 3px solid;
   display: flex; align-items: center;
 }
-.ws-header-spacer { flex: 1; min-width: calc(6 * var(--month-w)); }
+.ws-header-spacer { flex: 0 0 calc(7 * var(--month-w)); width: calc(7 * var(--month-w)); }
 
 /* ── Task row ── */
 .task-row { display: flex; border-bottom: 1px solid var(--border); min-height: var(--row-h); }
@@ -453,7 +454,7 @@ body {
   display: flex; align-items: center;
 }
 .task-timeline {
-  flex: 1; min-width: calc(6 * var(--month-w));
+  flex: 0 0 calc(7 * var(--month-w)); width: calc(7 * var(--month-w)); max-width: calc(7 * var(--month-w));
   position: relative;
   background: repeating-linear-gradient(
     to right,
@@ -536,7 +537,7 @@ body {
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
-  :root { --label-w: 130px; --month-w: 58px; }
+  :root { --label-w: 120px; --month-w: 48px; }
   body { padding: 0 12px; padding-block: 20px 36px; }
   .task-label { font-size: 10.5px; padding-left: 10px; }
   .stats-grid { grid-template-columns: 1fr; }
@@ -675,13 +676,14 @@ body {
 const MW = 72; // month width px
 
 // Project dates
-const PROJECT_START  = new Date(2026, 9,  1); // Oct 1, 2026
+const PROJECT_START  = new Date(2026, 8,  1); // Sep 1, 2026
 const WORKSHOP_DAY   = new Date(2027, 2,  2); // Mar 2, 2027
 const TODAY          = new Date();
 
 // ─── MONTHS ───────────────────────────────────────────────────────
 const MONTHS = [
-  { label: 'Oct 2026', newYear: false },
+  { label: 'Sep 2026', newYear: false },
+  { label: 'Oct',      newYear: false },
   { label: 'Nov',      newYear: false },
   { label: 'Dec',      newYear: false },
   { label: 'Jan 2027', newYear: true  },
@@ -689,15 +691,15 @@ const MONTHS = [
   { label: 'Mar',      newYear: false },
 ];
 
-// PHASES (6-month runway: Oct 2026 – Mar 2027)
+// PHASES (7-month runway: Sep 2026 – Mar 2027)
 const PHASES = [
   { label: 'Foundation',  start: 0, span: 2, color: 'rgba(7,122,138,0.10)',  text: '#077A8A' },
   { label: 'Development', start: 2, span: 2, color: 'rgba(59,82,196,0.09)',  text: '#3B52C4' },
-  { label: 'Final Prep',  start: 4, span: 1, color: 'rgba(184,92,26,0.11)', text: '#B85C1A' },
-  { label: 'Execution',   start: 5, span: 1, color: 'rgba(179,32,32,0.10)', text: '#B32020' },
+  { label: 'Final Prep',  start: 4, span: 2, color: 'rgba(184,92,26,0.11)', text: '#B85C1A' },
+  { label: 'Execution',   start: 6, span: 1, color: 'rgba(179,32,32,0.10)', text: '#B32020' },
 ];
 
-// WORKSTREAMS + TASKS (6-month runway: Oct 2026 – Mar 2, 2027)
+// WORKSTREAMS + TASKS (7-month runway: Sep 2026 – Mar 2, 2027)
 const WORKSTREAMS = [
   { label: 'Program Design & Approval', color: '#077A8A', tasks: [
     { name: 'Confirm Station B content',              start: 0, span: 1, milestone: true },
@@ -738,8 +740,8 @@ const WORKSTREAMS = [
   ]},
   { label: 'Execution', color: '#B32020', tasks: [
     { name: 'Day-before setup and rehearsal',         start: 5, span: 1 },
-    { name: '★ WORKSHOP DAY — Mar 2, 2027',           start: 5, span: 1, milestone: true, highlight: true },
-    { name: 'Post-event evaluation and debrief',      start: 5, span: 1 },
+    { name: '★ WORKSHOP DAY — Mar 2, 2027',           start: 6, span: 1, milestone: true, highlight: true },
+    { name: 'Post-event evaluation and debrief',      start: 6, span: 1 },
   ]},
 ];
 
@@ -763,9 +765,9 @@ function clamp(v, lo, hi) {
   return Math.max(lo, Math.min(hi, v));
 }
 
-// Month index (0-based from Oct 2026) for a given Date
+// Month index (0-based from Sep 2026) for a given Date
 function monthIndex(d) {
-  const startYear = 2026, startMonth = 9; // JS: Oct = 9
+  const startYear = 2026, startMonth = 8; // JS: Sep = 8
   return (d.getFullYear() - startYear) * 12 + (d.getMonth() - startMonth);
 }
 
@@ -809,12 +811,12 @@ function buildMetrics() {
     phaseBadge.textContent = `Kicks off in ${kickoffDays} day${kickoffDays !== 1 ? 's' : ''}`;
     phaseBadge.style.background = 'rgba(7,122,138,0.12)';
     phaseBadge.style.color = '#077A8A';
-    note.textContent = 'Foundation phase begins Oct 2026';
+    note.textContent = 'Foundation phase begins Sep 2026';
   } else {
     pctEl.textContent = pct + '%';
     if (currentPhase) {
       phaseLabel.textContent = currentPhase.label + ' Phase';
-      phaseBadge.textContent = MONTHS[clamp(mi, 0, 5)].label;
+      phaseBadge.textContent = MONTHS[clamp(mi, 0, 6)].label;
       phaseBadge.style.background = currentPhase.color;
       phaseBadge.style.color = currentPhase.text;
     }
@@ -859,7 +861,7 @@ function buildGantt() {
   const dayOfMonth = TODAY.getDate();
   const daysInMonth = new Date(TODAY.getFullYear(), TODAY.getMonth() + 1, 0).getDate();
   const todayFrac = dayOfMonth / daysInMonth;
-  const todayPx = mi >= 0 && mi < 6 ? (mi + todayFrac) * MW : null;
+  const todayPx = mi >= 0 && mi < 7 ? (mi + todayFrac) * MW : null;
 
   let h = '';
 
