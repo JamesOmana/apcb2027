@@ -17,9 +17,10 @@
 }
 html, body { margin: 0; height: 100%; overflow: hidden; background: var(--bg-deep); }
 body.idle, body.idle * { cursor: none !important; }
+#view { position: fixed; inset: 0; overflow: hidden; }   /* keeps the 1920px stage from stretching phone viewports */
 #stage {
-  position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px;
-  transform-origin: center; overflow: hidden;
+  position: absolute; left: 0; top: 0; width: 1920px; height: 1080px;
+  transform-origin: 0 0; overflow: hidden;
   background: radial-gradient(ellipse 70% 65% at 50% 44%, var(--bg-mid) 0%, var(--bg-deep) 75%);
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   opacity: 0; transition: opacity 2.5s ease;
@@ -80,6 +81,7 @@ body.idle, body.idle * { cursor: none !important; }
 </style>
 </head>
 <body>
+<div id="view">
 <div id="stage">
   <div id="aurora" class="layer"></div>
   <div id="spots" class="layer"></div>
@@ -102,6 +104,7 @@ body.idle, body.idle * { cursor: none !important; }
   <div id="borderTop" class="abs border"></div>
   <div id="borderBottom" class="abs border"></div>
   <div id="flash" class="layer"></div>
+</div>
 </div>
 <div id="debug"></div>
 
@@ -134,9 +137,12 @@ const BORDER_TILE_W = 265; // display width of one pattern tile at 70px height
   const W = 1920, H = 1080, TAU = Math.PI * 2, $ = id => document.getElementById(id);
   const E = Math.max(0, CONFIG.energy);
   const stage = $('stage');
-  const fit = () => { const s = Math.min(innerWidth / W, innerHeight / H);
-    stage.style.transform = `translate(-50%,-50%) scale(${s})`; };
-  addEventListener('resize', fit); fit();
+  const view = $('view');
+  const fit = () => { const vw = view.clientWidth, vh = view.clientHeight, s = Math.min(vw / W, vh / H);
+    stage.style.transform = `translate(${(vw - W * s) / 2}px, ${(vh - H * s) / 2}px) scale(${s})`; };
+  addEventListener('resize', fit); addEventListener('orientationchange', () => setTimeout(fit, 150));
+  if (window.visualViewport) visualViewport.addEventListener('resize', fit);
+  fit();
 
   const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
   const smooth = x => x * x * (3 - 2 * x);
